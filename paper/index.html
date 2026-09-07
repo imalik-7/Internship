@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="FlyRank ML Internship capstone: an honest, leakage-aware content refresh opportunity ranking study." />
+  <title>Prioritizing Content Refresh Opportunities with Search Performance Signals</title>
+  <style>
+    :root{
+      --bg:#f7f8fb;--paper:#fff;--ink:#17202a;--muted:#667085;--line:#e4e7ec;
+      --accent:#3157d5;--accent-soft:#eef2ff;--good:#166534;--warn:#92400e;
+      --max:1040px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+    a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+    .hero{background:linear-gradient(135deg,#101828 0%,#182c61 62%,#3157d5 100%);color:white;padding:72px 24px 56px}
+    .wrap{max-width:var(--max);margin:0 auto}.eyebrow{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;opacity:.8}
+    h1{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.02;max-width:930px;margin:14px 0 22px;letter-spacing:-.04em}
+    .dek{font-size:1.16rem;max-width:820px;color:#dce4ff}.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.pill{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 12px;font-size:.86rem;background:rgba(255,255,255,.07)}
+    nav{background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;overflow:auto;white-space:nowrap}.navin{max-width:var(--max);margin:auto;display:flex;gap:20px;padding:12px 22px;font-size:.88rem;font-weight:650}
+    main{max-width:var(--max);margin:30px auto 80px;padding:0 20px}.card,section{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:clamp(22px,4vw,42px);margin:18px 0;box-shadow:0 8px 28px rgba(16,24,40,.04)}
+    h2{font-size:clamp(1.55rem,3vw,2.15rem);letter-spacing:-.025em;margin:0 0 16px}h3{margin:26px 0 8px;font-size:1.05rem}p{margin:10px 0}.lead{font-size:1.08rem}.note{background:var(--accent-soft);border-left:4px solid var(--accent);padding:14px 16px;border-radius:8px;margin:18px 0}.warning{background:#fff7ed;border-left-color:#f59e0b}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.metric{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfe}.metric b{display:block;font-size:1.8rem;line-height:1.1}.metric span{font-size:.8rem;color:var(--muted)}
+    table{border-collapse:collapse;width:100%;font-size:.91rem;margin:18px 0}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:#475467;background:#f9fafb;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}tr.best{background:#f0fdf4}
+    .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px} .table-wrap table{margin:0;min-width:690px}
+    .chart{margin:24px 0}.chart-row{display:grid;grid-template-columns:165px 1fr 48px;gap:10px;align-items:center;margin:9px 0;font-size:.88rem}.bar-track{height:14px;border-radius:999px;background:#eef0f4;overflow:hidden}.bar{height:100%;border-radius:999px;background:linear-gradient(90deg,#3157d5,#7490ff)}.bar.gray{background:#98a2b3}.bar.green{background:#16a34a}.caption{font-size:.86rem;color:var(--muted);margin-top:10px}
+    .feature-row{display:grid;grid-template-columns:220px 1fr 60px;gap:10px;align-items:center;margin:10px 0;font-size:.86rem}.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.84rem;background:#f3f4f6;border-radius:7px;padding:2px 6px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.small{font-size:.9rem;color:var(--muted)}ul{padding-left:22px}.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.action{border:1px solid var(--line);border-radius:14px;padding:17px}.action b{display:block;margin-bottom:4px}.footer{font-size:.86rem;color:var(--muted);text-align:center;margin:40px 0}.repo-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.repo-links a{border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff}
+    @media(max-width:760px){.metrics{grid-template-columns:1fr 1fr}.two,.actions{grid-template-columns:1fr}.chart-row{grid-template-columns:112px 1fr 42px}.feature-row{grid-template-columns:150px 1fr 48px}.hero{padding-top:54px}section{border-radius:14px;padding:22px}}
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">FlyRank ML Internship · Search Intelligence Capstone</div>
+    <h1>Prioritizing Content Refresh Opportunities with Search Performance Signals</h1>
+    <p class="dek">A leakage-aware ranking study that asks a practical question: when a content team cannot review everything, which already-visible pages deserve human attention first?</p>
+    <div class="meta">
+      <span class="pill">Lane: Refresh / Content Opportunity Scoring</span>
+      <span class="pill">77,540 analysis rows</span>
+      <span class="pill">Client-grouped holdout</span>
+      <span class="pill">Decision support, not causal proof</span>
+    </div>
+  </div>
+</header>
+<nav><div class="navin"><a href="#abstract">Abstract</a><a href="#problem">Problem</a><a href="#data">Data</a><a href="#method">Methodology</a><a href="#results">Results</a><a href="#limits">Limitations</a><a href="#recommendations">Recommendations</a><a href="#repro">Reproducibility</a><a href="#credit">Credit</a></div></nav>
+<main>
+<section id="abstract">
+  <h2>Abstract</h2>
+  <p class="lead">Content teams have limited review capacity, so the practical question is not “which page is bad?” but <strong>which pages should be reviewed first?</strong> This study uses the FlyRank ML Internship warehouse to build a public-safe March 2026 feature frame from pre-decision search signals. A transparent CTR-versus-position baseline is compared with Logistic Regression, a small Decision Tree, and Random Forest using the same client-grouped holdout and Precision@K metrics. On that honest holdout, the best top-of-queue result reached <strong>Precision@50 = 0.30</strong> versus <strong>0.18</strong> for the frozen Week-4 baseline, while the held-out positive rate was <strong>0.179</strong>. The result is directional decision support for human reviewers, not proof that editing a recommended page will cause recovery.</p>
+</section>
+<section id="problem">
+  <h2>Introduction / Problem statement</h2>
+  <p>A reviewer can inspect only a small fraction of a large content portfolio at one time. A useful system therefore needs to rank candidates, provide a reason a human can inspect, and keep uncertainty visible.</p>
+  <div class="note"><strong>Research question:</strong> Which already-visible pages should a content team review first for refresh or optimization, using only search-performance signals available before the decision moment?</div>
+  <p>The supported action is <strong>human review</strong>. A high score means “inspect earlier,” not “automatically rewrite.” The cost of a bad recommendation is wasted reviewer time, unnecessary changes to healthy pages, or missing a stronger opportunity.</p>
+</section>
+<section id="data">
+  <h2>Data</h2>
+  <div class="two">
+    <div><h3>Source and grain</h3><p>FlyRank ML Internship warehouse on Hugging Face, primarily <span class="code">fact_content_daily_performance</span>. The model frame aggregates daily records to one pseudonymized client-content item.</p></div>
+    <div><h3>Development slice</h3><p>March 2026, used as a mid-panel development month. Feature window: <strong>March 1–15</strong>. Outcome window: <strong>March 16–30</strong>. Population: items with at least 100 feature-window impressions.</p></div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><b>77,540</b><span>client-content rows</span></div>
+    <div class="metric"><b>61,747</b><span>grouped train rows</span></div>
+    <div class="metric"><b>15,793</b><span>grouped test rows</span></div>
+    <div class="metric"><b>0</b><span>client overlap</span></div>
+  </div>
+  <p><strong>Excluded from model features:</strong> outcome-window impressions, the decline proxy itself, existing FlyRank product flags/scores, raw client names, domains, URLs, titles, private queries, and credentials.</p>
+</section>
+<section id="method">
+  <h2>Methodology</h2>
+  <h3>Features</h3>
+  <p>Exactly five aggregates available before the outcome window:</p>
+  <ul><li><span class="code">impressions_feature15</span></li><li><span class="code">clicks_feature15</span></li><li><span class="code">ctr_feature15</span></li><li><span class="code">avg_position_feature15</span></li><li><span class="code">active_impression_days_feature15</span></li></ul>
+  <h3>Label / proxy</h3>
+  <p><span class="code">is_declining_proxy = 1</span> when March 16–30 impressions are more than 20% below March 1–15 impressions. It is a short-window decline proxy, not a label proving that a page needs a refresh.</p>
+  <h3>Frozen baseline</h3>
+  <p>The Week-4 rule prioritizes pages with at least 500 feature-window impressions, average position 1–20, and CTR at least 20% below the training-set median CTR for the corresponding position tier. Its score is visibility × CTR-gap severity.</p>
+  <h3>Models and validation</h3>
+  <p>Logistic Regression, a depth-limited Decision Tree, and Random Forest produce probabilities used as ranking scores. The primary evaluation is a fixed-seed 75/25 split grouped by client, so a client never appears on both sides. Baseline and learned methods are evaluated on the same held-out rows with Precision@10, @20, @50 and Average Precision.</p>
+  <div class="note warning"><strong>Why the split matters:</strong> a convenient random row split reached Precision@50 = 0.80 for its best model, while the client-grouped evaluation kept for the paper reached 0.30. The large gap is evidence that random splitting can substantially overstate generalization when client-specific patterns repeat.</div>
+  <h3>Leakage audit</h3>
+  <p>All final features occur before the outcome window. The final feature list had an empty intersection with forbidden future/label/product-output fields. Existing system scores and flags are treated as baselines or context, never model inputs.</p>
+</section>
+<section id="results">
+  <h2>Results</h2>
+  <div class="metrics">
+    <div class="metric"><b>0.179</b><span>held-out positive rate</span></div>
+    <div class="metric"><b>0.30</b><span>best Precision@50</span></div>
+    <div class="metric"><b>0.18</b><span>baseline Precision@50</span></div>
+    <div class="metric"><b>+0.12</b><span>absolute P@50 lift</span></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Precision@10</th><th>Precision@20</th><th>Precision@50</th><th>Average Precision</th></tr></thead>
+    <tbody>
+      <tr class="best"><td><strong>Decision Tree</strong></td><td>0.30</td><td>0.30</td><td><strong>0.30</strong></td><td>0.196</td></tr>
+      <tr><td>Random Forest</td><td>0.30</td><td>0.25</td><td>0.30</td><td>0.197</td></tr>
+      <tr><td>Logistic Regression</td><td>0.00</td><td>0.20</td><td>0.30</td><td><strong>0.238</strong></td></tr>
+      <tr><td>Week-4 baseline</td><td>0.20</td><td>0.15</td><td>0.18</td><td>0.186</td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">The Decision Tree is used for the action queue because it ties at Precision@50 and has the strongest Precision@20 among the learned candidates. Logistic Regression has the highest Average Precision, showing that “best” depends on where in the ranked list the team acts.</p>
+  <h3>Precision at the top of the queue</h3>
+  <div class="chart">
+    <div class="chart-row"><span>Decision Tree P@10</span><div class="bar-track"><div class="bar green" style="width:60%"></div></div><strong>0.30</strong></div>
+    <div class="chart-row"><span>Decision Tree P@20</span><div class="bar-track"><div class="bar green" style="width:60%"></div></div><strong>0.30</strong></div>
+    <div class="chart-row"><span>Decision Tree P@50</span><div class="bar-track"><div class="bar green" style="width:60%"></div></div><strong>0.30</strong></div>
+    <div class="chart-row"><span>Baseline P@10</span><div class="bar-track"><div class="bar gray" style="width:40%"></div></div><strong>0.20</strong></div>
+    <div class="chart-row"><span>Baseline P@20</span><div class="bar-track"><div class="bar gray" style="width:30%"></div></div><strong>0.15</strong></div>
+    <div class="chart-row"><span>Baseline P@50</span><div class="bar-track"><div class="bar gray" style="width:36%"></div></div><strong>0.18</strong></div>
+    <p class="caption">Chart scale is normalized to 0.50 so differences in Precision@K are visually legible.</p>
+  </div>
+  <h3>What the selected tree leans on</h3>
+  <div class="chart">
+    <div class="feature-row"><span>CTR</span><div class="bar-track"><div class="bar" style="width:94%"></div></div><strong>0.470</strong></div>
+    <div class="feature-row"><span>Active impression days</span><div class="bar-track"><div class="bar" style="width:53%"></div></div><strong>0.263</strong></div>
+    <div class="feature-row"><span>Average position</span><div class="bar-track"><div class="bar" style="width:24%"></div></div><strong>0.121</strong></div>
+    <div class="feature-row"><span>Clicks</span><div class="bar-track"><div class="bar" style="width:15%"></div></div><strong>0.075</strong></div>
+    <div class="feature-row"><span>Impressions</span><div class="bar-track"><div class="bar" style="width:14%"></div></div><strong>0.072</strong></div>
+    <p class="caption">Decision-tree feature importances describe how this fitted model split the data; they are not causal effect estimates.</p>
+  </div>
+</section>
+<section id="limits">
+  <h2>Limitations & honest framing</h2>
+  <ul>
+    <li>This is an observational, short-window ranking experiment.</li>
+    <li>The label is a later impression-decline <strong>proxy</strong>, not observed benefit from refreshing content.</li>
+    <li>The study uses one mid-panel month and five search-only features; it does not fully model seasonality, query mix, SERP changes, content quality, or business priorities.</li>
+    <li>Client grouping reduces memorization across clients, but a future multi-month time split would better mimic deployment.</li>
+    <li>The result does not prove Google's ranking algorithm and does not establish that a refresh causes recovery.</li>
+  </ul>
+  <p><strong>Safe interpretation:</strong> these scores support directional prioritization for human review. They should not trigger automatic deletion, rewriting, canonical changes, or publishing.</p>
+</section>
+<section id="recommendations">
+  <h2>Ranked recommendations</h2>
+  <p>The model score determines review order; reason codes then translate observable patterns into a human action. The public top ten were tied at the same Decision Tree score, so their relative order should not be treated as meaningful beyond “review this group early.” Human context is the tie-breaker.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Rank</th><th>Pseudonymous content ID</th><th>Score</th><th>Reason</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="code">content_6fc8a08fd97d4484</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>2</td><td class="code">content_327e457ee63d5b80</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>3</td><td class="code">content_fc62cd3ab19190ab</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>4</td><td class="code">content_0b3a992155aa7128</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>5</td><td class="code">content_3060c95ca2e10519</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>6</td><td class="code">content_b60f07578c351b40</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>7</td><td class="code">content_4776892b680cbb12</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>8</td><td class="code">content_4e8449b09162501e</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>9</td><td class="code">content_543fe0eac98e3a36</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+      <tr><td>10</td><td class="code">content_5051e54e9988ad85</td><td>0.564496</td><td>multi_signal_review</td><td>manual_content_review</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Action playbook</h3>
+  <div class="actions">
+    <div class="action"><b>High visibility + low CTR</b>Review title/meta and intent match. Check query intent and SERP features before editing.</div>
+    <div class="action"><b>Position 11–20</b>Review content/query fit. Confirm ranking queries match the intended topic.</div>
+    <div class="action"><b>Thin observation window</b>Monitor before editing. More evidence may be needed.</div>
+    <div class="action"><b>Strong search capture</b>Protect and monitor. Avoid unnecessary changes unless a real problem is verified.</div>
+  </div>
+</section>
+<section id="repro">
+  <h2>Reproducibility</h2>
+  <p>Random seed: <strong>42</strong>. The warehouse token is read from Colab Secrets and is never committed. Every weekly notebook that led to this paper lives under <span class="code">work/notebooks/</span>.</p>
+  <div class="repo-links">
+    <a href="https://github.com/imalik-7/Internship" target="_blank" rel="noreferrer">Repository</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w01_research_question.ipynb" target="_blank" rel="noreferrer">Week 1</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w02_ml_task_framing.ipynb" target="_blank" rel="noreferrer">Week 2</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w03_data_contract.ipynb" target="_blank" rel="noreferrer">Week 3</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w04_baseline_score.ipynb" target="_blank" rel="noreferrer">Week 4</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w05_model.ipynb" target="_blank" rel="noreferrer">Week 5</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w06_validation_audit.ipynb" target="_blank" rel="noreferrer">Week 6</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/w07_action_playbook.ipynb" target="_blank" rel="noreferrer">Week 7</a>
+    <a href="https://github.com/imalik-7/Internship/blob/main/work/notebooks/capstone.ipynb" target="_blank" rel="noreferrer">Capstone notebook</a>
+  </div>
+</section>
+<section id="credit">
+  <h2>Acknowledgments & data credit</h2>
+  <p><strong>Built on the FlyRank ML Internship dataset.</strong> Data source and internship framework: <a href="https://flyrank.ai" target="_blank" rel="noreferrer">FlyRank</a>.</p>
+  <p class="small">Thanks to the FlyRank internship track for the public-safe warehouse release and the emphasis on transparent baselines, leakage checks, honest validation, and human-readable actions.</p>
+</section>
+<div class="footer">Research capstone · Refresh / Content Opportunity Scoring · September 2026</div>
+</main>
+</body>
+</html>
